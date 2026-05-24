@@ -3,7 +3,7 @@ import { useAuth } from '@/context/auth-context';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Users, UserCircle, Receipt, LogOut, Menu, X } from 'lucide-react';
+import { Users, UserCircle, Receipt, LogOut, Menu, X, User } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -40,11 +40,17 @@ export default function DashboardLayout() {
             </button>
             <h1 className="text-lg sm:text-xl font-bold text-slate-900">Gestión de Cobros</h1>
           </div>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <span className="hidden sm:block text-sm text-slate-600">
-              {user?.nombre} ({user?.rol})
-            </span>
-            <Button variant="outline" size="sm" onClick={handleLogout}>
+<div className="flex items-center gap-2 sm:gap-4">
+             <Link to="/profile">
+               <Button variant="ghost" size="sm">
+                 <User className="w-4 h-4 sm:mr-2" />
+                 <span className="hidden sm:inline">Perfil</span>
+               </Button>
+             </Link>
+             <span className="hidden sm:block text-sm text-slate-600">
+               {user?.nombre} ({user?.rol})
+             </span>
+             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Salir</span>
             </Button>

@@ -39,6 +39,11 @@ export const api = {
 
   users: {
     getAll: () => request<User[]>('/users'),
+    getProfile: () => request<User>('/users/profile'),
+    updateProfile: (data: { nombre?: string; email?: string }) =>
+      request<User>('/users/profile', { method: 'PATCH', body: JSON.stringify(data) }),
+    changePassword: (data: { currentPassword: string; newPassword: string }) =>
+      request<{ message: string }>('/users/profile/password', { method: 'POST', body: JSON.stringify(data) }),
     create: (data: { nombre: string; email: string; password: string; rol: 'ADMIN' | 'COBRADOR' }) =>
       request<User>('/users', { method: 'POST', body: JSON.stringify(data) }),
     update: (id: string, data: Partial<{ nombre: string; email: string; password: string; rol: string; activo: boolean }>) =>
