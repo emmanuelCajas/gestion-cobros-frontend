@@ -110,15 +110,15 @@ export function PaymentPDF({ loan, payments }: PaymentPDFProps) {
           <View style={styles.row}>
             <View>
               <Text style={styles.label}>Monto Original</Text>
-              <Text style={styles.value}>${Number(loan.montoOriginal).toLocaleString()}</Text>
+              <Text style={styles.value}>€{Number(loan.montoOriginal).toLocaleString('es-ES')}</Text>
             </View>
             <View>
               <Text style={styles.label}>Total con Interés</Text>
-              <Text style={styles.value}>${Number(loan.totalConInteres).toLocaleString()}</Text>
+              <Text style={styles.value}>€{Number(loan.totalConInteres).toLocaleString('es-ES')}</Text>
             </View>
             <View>
               <Text style={styles.label}>Saldo Pendiente</Text>
-              <Text style={styles.value}>${Number(loan.saldoPendiente).toLocaleString()}</Text>
+              <Text style={styles.value}>€{Number(loan.saldoPendiente).toLocaleString('es-ES')}</Text>
             </View>
           </View>
         </View>
@@ -144,10 +144,10 @@ export function PaymentPDF({ loan, payments }: PaymentPDFProps) {
                   {format(new Date(payment.horaRegistro), 'HH:mm')}
                 </Text>
                 <Text style={[styles.cell, styles.col, { color: '#16a34a' }]}>
-                  +${Number(payment.monto).toLocaleString()}
+                  +€{Number(payment.monto).toLocaleString('es-ES')}
                 </Text>
                 <Text style={[styles.cell, styles.col]}>
-                  ${(payment.saldoRestante ?? 0).toLocaleString()}
+                  €{(payment.saldoRestante ?? 0).toLocaleString('es-ES')}
                 </Text>
                 <Text style={[styles.cell, styles.colWide]}>
                   {payment.observacion || '-'}
@@ -160,7 +160,7 @@ export function PaymentPDF({ loan, payments }: PaymentPDFProps) {
         <View style={styles.totalRow}>
           <Text style={styles.totalLabel}>Total Pagado:</Text>
           <Text style={[styles.totalValue, { color: '#16a34a' }]}>
-            ${totalPagado.toLocaleString()}
+            €{totalPagado.toLocaleString('es-ES')}
           </Text>
         </View>
 

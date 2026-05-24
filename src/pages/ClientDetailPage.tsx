@@ -194,19 +194,19 @@ export default function ClientDetailPage() {
                 <div className="grid grid-cols-4 gap-4 mb-4">
                   <div>
                     <p className="text-sm text-slate-500">Monto Original</p>
-                    <p className="text-lg font-semibold">${Number(loan.montoOriginal).toLocaleString()}</p>
+                    <p className="text-lg font-semibold">€{Number(loan.montoOriginal).toLocaleString('es-ES')}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500">Total con Interés</p>
-                    <p className="text-lg font-semibold">${Number(loan.totalConInteres).toLocaleString()}</p>
+                    <p className="text-lg font-semibold">€{Number(loan.totalConInteres).toLocaleString('es-ES')}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500">Total Pagado</p>
-                    <p className="text-lg font-semibold text-green-600">${totalPagado.toLocaleString()}</p>
+                    <p className="text-lg font-semibold text-green-600">€{totalPagado.toLocaleString('es-ES')}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500">Saldo Pendiente</p>
-                    <p className="text-lg font-semibold text-orange-600">${Number(loan.saldoPendiente).toLocaleString()}</p>
+                    <p className="text-lg font-semibold text-orange-600">€{Number(loan.saldoPendiente).toLocaleString('es-ES')}</p>
                   </div>
                 </div>
 

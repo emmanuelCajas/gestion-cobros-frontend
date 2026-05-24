@@ -58,7 +58,7 @@ export default function LoanDetailPage() {
     const saldoPendiente = Number(loan.saldoPendiente);
 
     if (monto > saldoPendiente) {
-      setError(`El monto no puede ser mayor al saldo pendiente ($${saldoPendiente.toLocaleString()})`);
+      setError(`El monto no puede ser mayor al saldo pendiente (€${saldoPendiente.toLocaleString('es-ES')})`);
       return;
     }
 
@@ -122,7 +122,7 @@ export default function LoanDetailPage() {
             <CardTitle className="text-sm font-medium text-slate-500">Monto Original</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">${Number(loan.montoOriginal).toLocaleString()}</p>
+            <p className="text-2xl font-bold">€{Number(loan.montoOriginal).toLocaleString('es-ES')}</p>
           </CardContent>
         </Card>
         <Card>
@@ -130,7 +130,7 @@ export default function LoanDetailPage() {
             <CardTitle className="text-sm font-medium text-slate-500">Total con Interés</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">${Number(loan.totalConInteres).toLocaleString()}</p>
+            <p className="text-2xl font-bold">€{Number(loan.totalConInteres).toLocaleString('es-ES')}</p>
             {loan.tasaInteresMensual && (
               <p className="text-xs text-slate-500">
                 Tasa: {(Number(loan.tasaInteresMensual) * 100).toFixed(2)}% mensual
@@ -143,7 +143,7 @@ export default function LoanDetailPage() {
             <CardTitle className="text-sm font-medium text-slate-500">Total Pagado</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-green-600">${totalPagado.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-green-600">€{totalPagado.toLocaleString('es-ES')}</p>
             <p className="text-xs text-slate-500">{Math.round(porcentaje)}% del total</p>
           </CardContent>
         </Card>
@@ -152,7 +152,7 @@ export default function LoanDetailPage() {
             <CardTitle className="text-sm font-medium text-slate-500">Saldo Pendiente</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-orange-600">${Number(loan.saldoPendiente).toLocaleString()}</p>
+            <p className="text-2xl font-bold text-orange-600">€{Number(loan.saldoPendiente).toLocaleString('es-ES')}</p>
           </CardContent>
         </Card>
       </div>
@@ -256,11 +256,11 @@ export default function LoanDetailPage() {
                 <TableRow key={payment.id}>
                   <TableCell>{format(new Date(payment.fechaPago), 'dd/MM/yyyy')}</TableCell>
                   <TableCell>{format(new Date(payment.horaRegistro), 'HH:mm')}</TableCell>
-                  <TableCell className="font-medium text-green-600">
-                    +${Number(payment.monto).toLocaleString()}
-                  </TableCell>
-                  <TableCell className="text-orange-600">
-                    ${(payment.saldoRestante ?? 0).toLocaleString()}
+<TableCell className="font-medium text-green-600">
+                      +€{Number(payment.monto).toLocaleString('es-ES')}
+                    </TableCell>
+                    <TableCell className="text-orange-600">
+                      €{(payment.saldoRestante ?? 0).toLocaleString('es-ES')}
                   </TableCell>
                   <TableCell>{payment.registradoPor?.nombre || 'N/A'}</TableCell>
                   <TableCell className="text-slate-500">{payment.observacion || '-'}</TableCell>

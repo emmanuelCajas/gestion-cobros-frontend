@@ -54,7 +54,7 @@ export default function PaymentsPage() {
     const saldoPendiente = Number(selectedLoan.saldoPendiente);
 
     if (monto > saldoPendiente) {
-      setError(`El monto no puede ser mayor al saldo pendiente ($${saldoPendiente.toLocaleString()})`);
+      setError(`El monto no puede ser mayor al saldo pendiente (€${saldoPendiente.toLocaleString('es-ES')})`);
       return;
     }
 
@@ -132,7 +132,7 @@ export default function PaymentsPage() {
                               {format(new Date(loan.fechaCreacion), 'dd/MM/yyyy')}
                             </p>
                           </div>
-                          <p className="font-semibold text-orange-600">${saldo.toLocaleString()}</p>
+                          <p className="font-semibold text-orange-600">€{saldo.toLocaleString('es-ES')}</p>
                         </div>
                       </button>
                     );
@@ -148,7 +148,7 @@ export default function PaymentsPage() {
                 <div>
                   <p className="text-sm text-slate-500">Préstamo #{selectedLoan.id.slice(0, 8)}</p>
                   <p className="font-semibold text-orange-600">
-                    ${Number(selectedLoan.saldoPendiente).toLocaleString()} saldo
+                    €{Number(selectedLoan.saldoPendiente).toLocaleString('es-ES')} saldo
                   </p>
                 </div>
                 <Button variant="ghost" size="sm" type="button" onClick={() => setSelectedLoan(null)}>
@@ -291,7 +291,7 @@ export default function PaymentsPage() {
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold text-orange-600">${saldo.toLocaleString()}</p>
+                            <p className="font-semibold text-orange-600">€{saldo.toLocaleString('es-ES')}</p>
                             <p className="text-xs text-slate-500">saldo</p>
                           </div>
                         </div>
