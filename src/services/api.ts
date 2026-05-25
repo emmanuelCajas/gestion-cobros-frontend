@@ -28,6 +28,27 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   return response.json();
 }
 
+async function requestBlob(endpoint: string, options: RequestInit = {}): Promise<Blob> {
+  const token = getToken();
+
+  const headers: HeadersInit = {
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
+  };
+
+  const response = await fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    headers,
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: 'Error desconocido' }));
+    throw new Error(error.message || `HTTP ${response.status}`);
+  }
+
+  return response.blob();
+}
+
 export const api = {
   auth: {
     login: (email: string, password: string) =>
@@ -69,6 +90,7 @@ export const api = {
     update: (id: string, data: Partial<{ montoOriginal: number; tasaInteresMensual: number; activo: boolean }>) =>
       request<Loan>(`/loans/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
     delete: (id: string) => request<Loan>(`/loans/${id}`, { method: 'DELETE' }),
+    exportExcel: () => requestBlob('/loans/export'),
   },
 
   payments: {

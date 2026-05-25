@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Plus, Search, Trash2, Eye, Loader2, BarChart3 } from 'lucide-react';
+import { Plus, Search, Trash2, Eye, Loader2, BarChart3, FileSpreadsheet } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { z } from 'zod';
 
@@ -26,6 +26,7 @@ export default function ClientsPage() {
   const [showForm, setShowForm] = useState(false);
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
+  const [exportLoading, setExportLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     nombre: '',
@@ -55,6 +56,25 @@ export default function ClientsPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['clients'] }),
   });
 
+  const handleExport = async () => {
+    try {
+      setExportLoading(true);
+      const blob = await api.loans.exportExcel();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'prestamos-y-pagos.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -81,11 +101,21 @@ export default function ClientsPage() {
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <h2 className="text-xl sm:text-2xl font-bold">Clientes</h2>
-        <Button onClick={() => setShowForm(!showForm)} size="sm">
-          <Plus className="w-4 h-4 mr-2" />
-          <span className="sm:hidden">Nuevo</span>
-          <span className="hidden sm:inline">Nuevo Cliente</span>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleExport} disabled={exportLoading} size="sm">
+            {exportLoading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <FileSpreadsheet className="w-4 h-4 mr-2" />
+            )}
+            Exportar Excel
+          </Button>
+          <Button onClick={() => setShowForm(!showForm)} size="sm">
+            <Plus className="w-4 h-4 mr-2" />
+            <span className="sm:hidden">Nuevo</span>
+            <span className="hidden sm:inline">Nuevo Cliente</span>
+          </Button>
+        </div>
       </div>
 
       <div className="relative">
