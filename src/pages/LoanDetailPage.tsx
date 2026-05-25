@@ -27,12 +27,12 @@ export default function LoanDetailPage() {
     observacion: '',
   });
 
-  const { data: loan, isLoading } = useQuery({
+  const { data: loan, isLoading, error: loanError } = useQuery({
     queryKey: ['loan', id],
     queryFn: () => api.loans.getOne(id!),
   });
 
-  const { data: payments } = useQuery({
+  const { data: payments, error: paymentsError } = useQuery({
     queryKey: ['payments', id],
     queryFn: () => api.payments.getByLoan(id!),
   });
@@ -78,8 +78,32 @@ export default function LoanDetailPage() {
     );
   }
 
+  if (!id) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-500 font-medium">ID de préstamo no válido</p>
+        <Button variant="link" onClick={() => navigate('/loans')} className="mt-2">Ir a préstamos</Button>
+      </div>
+    );
+  }
+
+  if (loanError) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-500 font-medium">Error al cargar el préstamo</p>
+        <p className="text-sm text-slate-500 mt-1">{loanError.message}</p>
+        <Button variant="link" onClick={() => navigate('/loans')} className="mt-2">Ir a préstamos</Button>
+      </div>
+    );
+  }
+
   if (!loan) {
-    return <div className="text-center py-12 text-slate-500">Préstamo no encontrado</div>;
+    return (
+      <div className="text-center py-12">
+        <p className="text-slate-500">Préstamo no encontrado</p>
+        <Button variant="link" onClick={() => navigate('/loans')} className="mt-2">Ir a préstamos</Button>
+      </div>
+    );
   }
 
   const totalPagado = Number(loan.totalConInteres) - Number(loan.saldoPendiente);
@@ -238,6 +262,12 @@ export default function LoanDetailPage() {
         </Card>
       )}
 
+{showPaymentForm && paymentsError && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>Error al cargar pagos: {paymentsError.message}</AlertDescription>
+        </Alert>
+      )}
+
       <Card>
         <CardContent className="p-0">
           <Table>
@@ -256,7 +286,7 @@ export default function LoanDetailPage() {
                 <TableRow key={payment.id}>
                   <TableCell>{format(new Date(payment.fechaPago), 'dd/MM/yyyy')}</TableCell>
                   <TableCell>{format(new Date(payment.horaRegistro), 'HH:mm')}</TableCell>
-<TableCell className="font-medium text-green-600">
+                  <TableCell className="font-medium text-green-600">
                       +€{Number(payment.monto).toLocaleString('es-ES')}
                     </TableCell>
                     <TableCell className="text-orange-600">
@@ -268,11 +298,15 @@ export default function LoanDetailPage() {
               ))}
             </TableBody>
           </Table>
-          {(!payments || payments.length === 0) && (
+          {paymentsError ? (
+            <div className="text-center py-8 text-red-500">
+              Error al cargar el historial de pagos
+            </div>
+          ) : (!payments || payments.length === 0) ? (
             <div className="text-center py-8 text-slate-500">
               No hay pagos registrados para este préstamo
             </div>
-          )}
+          ) : null}
         </CardContent>
       </Card>
     </div>
